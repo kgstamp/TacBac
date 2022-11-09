@@ -177,28 +177,30 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.rowView}>
-        <TouchableOpacity style={{ width: 120 }}>
-          {!isConnected ? (
-            <Button
-              title="Connect"
-              onPress={() => {
-                scanDevices();
-              }}
-              disabled={false}
-            />
-          ) : (
-            <Button
-              title="Disonnect"
-              onPress={() => {
-                disconnectDevice();
-              }}
-              disabled={false}
-            />
-          )}
-        </TouchableOpacity>
-        <View style={styles.container}>
+    <View style={{ width: '100%', height: '100%', backgroundColor: '#ddebff', alignItems: 'center' }}>
+      <View style={{ position: 'absolute', top: '40%', width: '90%' }}>
+        <View style={{ width: '100%' }}>
+          <TouchableOpacity style={{ width: '100%' }}>
+            {!isConnected ? (
+              <Button
+                title="Connect Bluetooth"
+                onPress={() => {
+                  scanDevices();
+                }}
+                disabled={false}
+              />
+            ) : (
+              <Button
+                title="Disonnect"
+                onPress={() => {
+                  disconnectDevice();
+                }}
+                disabled={false}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={{ margin: 10, alignItems: 'stretch', justifyContent: 'center' }}>
           <Slider
             minimumValue={0}
             maximumValue={100}
@@ -206,7 +208,9 @@ export default function App() {
             value={vibrationValue}
             onValueChange={value => setVibrationValue(value)}
           />
-          <Text> Vibration Level: {vibrationValue}</Text>
+        </View>
+        <View style={{}}>
+          <Text style={{ textAlign: 'center' }}> Vibration Level: {vibrationValue}</Text>
         </View>
       </View>
     </View>
@@ -216,11 +220,6 @@ export default function App() {
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginLeft: 10,
-    marginRight: 10,
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    textAlign: 'center'
+    justifyContent: 'center', alignContent: 'center'
   },
 });
