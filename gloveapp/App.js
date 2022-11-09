@@ -177,18 +177,19 @@ export default function App() {
   }
 
   return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#ddebff', alignItems: 'center' }}>
-      <View style={{ position: 'absolute', top: '40%', width: '90%' }}>
+    <View style={{ width: '100%', height: '100%', backgroundColor: '#ddebff', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <View style={{ position: 'absolute', width: '90%' }}>
+        <Text style={{ textAlign: 'center', fontSize: 100, fontWeight: 'bold', fontFamily: 'serif' }}>
+          TacBac
+        </Text>
         <View style={{ width: '100%' }}>
           <TouchableOpacity style={{ width: '100%' }}>
             {!isConnected ? (
-              <Button
-                title="Connect Bluetooth"
-                onPress={() => {
-                  scanDevices();
-                }}
-                disabled={false}
-              />
+              <TouchableOpacity onPress={() => { scanDevices(); }} style={{ marginHorizontal: 70, marginVertical: 20, padding: 15, borderRadius: 10, backgroundColor: '#1d64d0', alignItems: 'center' }}>
+                <Text style={{ textAlign: 'center', fontSize: 20, color: 'white' }}>
+                  Connect Bluetooth
+                </Text>
+              </TouchableOpacity>
             ) : (
               <Button
                 title="Disonnect"
@@ -210,7 +211,9 @@ export default function App() {
           />
         </View>
         <View style={{}}>
-          <Text style={{ textAlign: 'center' }}> Vibration Level: {vibrationValue}</Text>
+          <Text style={{ textAlign: 'center', fontSize: 20 }}>
+            Vibration Level: <Text style={{ fontWeight: 'bold' }}>{vibrationValue}</Text>
+          </Text>
         </View>
       </View>
     </View>
