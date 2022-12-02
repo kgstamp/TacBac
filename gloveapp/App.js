@@ -4,10 +4,9 @@ import { React, useState } from 'react';
 import { BleManager, Device } from 'react-native-ble-plx';
 import { Slider } from '@miblanchard/react-native-slider';
 
-// const BLTManager = new BleManager();
-// const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
-// const MESSAGE_UUID = '6d68efe5-04b6-4a85-abc4-c2670b7bf7fd';
-// const BOX_UUID = 'f27b53ad-c63d-49a0-8c0f-9f297e6cc520';
+const BLTManager = new BleManager();
+const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
+const SLIDER_UUID = '6d68efe5-04b6-4a85-abc4-c2670b7bf7fd';
 
 function StringToBool(input) {
   if (input == '1') {
@@ -26,13 +25,10 @@ function BoolToString(input) {
 }
 
 export default function App() {
-  //Is connect page displayed
-  const connectPage = useState(true)
-  //Is a device connected?
-  const [isConnected, setIsConnected] = useState(false);
-  //What device is connected?
-  const [connectedDevice, setConnectedDevice] = useState();
 
+  const connectPage = useState(true)  //Is connect page displayed
+  const [isConnected, setIsConnected] = useState(false);  //Is a device connected?
+  const [connectedDevice, setConnectedDevice] = useState();  //What device is connected?
   const [vibrationValue, setVibrationValue] = useState(50);
 
   // Scans availbale BLT Devices and then call connectDevice
@@ -46,7 +42,7 @@ export default function App() {
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',
       },
-    ).then(answere => {
+    ).then(answer => {
       console.log('scanning');
       // display the Activityindicator
 
@@ -55,7 +51,7 @@ export default function App() {
           console.warn(error);
         }
 
-        if (scannedDevice && scannedDevice.name == 'BLEExample') {
+        if (scannedDevice && scannedDevice.name == 'CIRCUITPYe644') {
           BLTManager.stopDeviceScan();
           connectDevice(scannedDevice);
         }
@@ -110,18 +106,11 @@ export default function App() {
 
         //Read inital values
 
-        //Message
-        device
-          .readCharacteristicForService(SERVICE_UUID, MESSAGE_UUID)
-          .then(valenc => {
-            setMessage(base64.decode(valenc?.value));
-          });
-
         //SliderValue
         device
-          .readCharacteristicForService(SERVICE_UUID, BOX_UUID)
+          .readCharacteristicForService(SERVICE_UUID, SLIDER_UUID)
           .then(valenc => {
-            setBoxValue(StringToBool(base64.decode(valenc?.value)));
+            setBoxValue(base64.decode(valenc?.value));
           });
 
         //monitor values and tell what to do when receiving an update
@@ -145,17 +134,17 @@ export default function App() {
         //BoxValue
         device.monitorCharacteristicForService(
           SERVICE_UUID,
-          BOX_UUID,
+          SLIDER_UUID,
           (error, characteristic) => {
             if (characteristic?.value != null) {
-              setBoxValue(StringToBool(base64.decode(characteristic?.value)));
+              setMessage(base64.decode(characteristic?.value));
               console.log(
-                'Box Value update received: ',
+                'Slider value update received: ',
                 base64.decode(characteristic?.value),
               );
             }
           },
-          'boxtransaction',
+          'slidertransaction',
         );
 
         console.log('Connection established');
@@ -169,7 +158,7 @@ export default function App() {
     BLTManager.writeCharacteristicWithResponseForDevice(
       connectedDevice?.id,
       SERVICE_UUID,
-      BOX_UUID,
+      SLIDER_UUID,
       base64.encode(value.toString()),
     ).then(characteristic => {
       console.log('SliderValue changed to :', base64.decode(characteristic.value));
@@ -192,7 +181,7 @@ export default function App() {
               </TouchableOpacity>
             ) : (
               <Button
-                title="Disonnect"
+                title="Disconnect"
                 onPress={() => {
                   disconnectDevice();
                 }}

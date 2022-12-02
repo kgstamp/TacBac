@@ -26,10 +26,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.tacbac.gloveapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ae84fd7c-8cfb-4435-bd30-16f85142c32d"
+      }
+    },
+    "owner": "tacbac"
   }
 }
