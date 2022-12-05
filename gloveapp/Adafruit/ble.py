@@ -28,7 +28,11 @@ while True:
 
     while ble.connected:
         if uart_service.in_waiting:
-            packet = Packet.from_stream(uart_service)
-            if isinstance(packet, ColorPacket):
-                print(packet.color)
-                pixels.fill(packet.color)
+            s = uart_service.readline()
+            if s:
+                try:
+                    vibration_strength = int(s)
+                    print(vibration_strength)
+                except:
+                    vibration_strength = repr(s)
+                    print(vibration_strength)

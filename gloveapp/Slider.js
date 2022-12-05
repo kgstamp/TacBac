@@ -3,34 +3,24 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { Slider } from '@miblanchard/react-native-slider';
 
-class VibrationSlider extends React.Component {
+export default function VibrationSlider(value, onChange) {
 
-    state = {
-        value: 50,
-    };
-
-    valueChange(value) {
-        this.setState({ value });
-        // put code to communicate with the adafruit
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <Slider
-                    minimumValue={0}
-                    maximumValue={100}
-                    step={10}
-                    value={this.state.value}
-                    onValueChange={value => this.valueChange(value)}
-                />
-                <Text> Vibration Level: {this.state.value}</Text>
-            </View>
-        );
-    }
+    return (
+        <View style={{ margin: 10, alignItems: 'stretch', justifyContent: 'center' }}>
+            <Slider
+                minimumValue={0}
+                maximumValue={100}
+                step={10}
+                value={value}
+                onValueChange={newValue => onChange(newValue)}
+            />
+            <Text style={{ textAlign: 'center', fontSize: 20 }}>
+                Vibration Level: <Text style={{ fontWeight: 'bold' }}>{this.state.value}</Text>
+            </Text>
+        </View>
+    );
 }
 
-export default VibrationSlider;
 
 var styles = StyleSheet.create({
     container: {
