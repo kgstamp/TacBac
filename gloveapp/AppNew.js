@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Button, PermissionsAndroid } 
 import { React, useState } from 'react';
 import { BleManager, Device } from 'react-native-ble-plx';
 import { Slider } from '@miblanchard/react-native-slider';
+import { Settings } from './settings.js';
+import { QA } from './qa.js';
 
 const BLTManager = new BleManager();
 const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
@@ -30,6 +32,9 @@ export default function App() {
   const [isConnected, setIsConnected] = useState(false);  //Is a device connected?
   const [connectedDevice, setConnectedDevice] = useState();  //What device is connected?
   const [vibrationValue, setVibrationValue] = useState(50);
+  const currentPage = useState("HOME")
+  const colorMode = useState("blue-white")
+
 
   // Scans availbale BLT Devices and then call connectDevice
   async function scanDevices() {
@@ -165,35 +170,71 @@ export default function App() {
     });
   }
 
-  return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#ddebff', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-      <View style={{ position: 'absolute', width: '90%' }}>
-        <Text style={{ textAlign: 'center', fontSize: 100, fontWeight: 'bold', fontFamily: 'serif' }}>
-          TacBac
-        </Text>
-        <View style={{ width: '100%' }}>
-          <TouchableOpacity style={{ width: '100%' }}>
-            {!isConnected ? (
-              <TouchableOpacity onPress={() => { scanDevices(); }} style={{ marginHorizontal: 70, marginVertical: 20, padding: 15, borderRadius: 10, backgroundColor: '#1d64d0', alignItems: 'center' }}>
-                <Text style={{ textAlign: 'center', fontSize: 20, color: 'white' }}>
-                  Connect Bluetooth
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <Button
-                title="Disconnect"
-                onPress={() => {
-                  disconnectDevice();
-                }}
-                disabled={false}
-              />
-            )}
-          </TouchableOpacity>
+  function switchPage(page) {
+    this.setState(
+      currentPage: page
+    );
+  }
+
+  if (currentPage == "SETTINGS") {
+    return (
+      <Settings
+        switchPage={switchPage}
+      />
+    );
+  }
+  else if (currentPage == "QA") {
+    return (
+      <QA
+        switchPage={switchPage}
+      />
+    );
+  }
+  else {
+    return (
+      <View style={{ width: '100%', height: '100%', backgroundColor: '#ddebff', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <View style={{ position: 'absolute', width: '90%' }}>
+          <Text style={{ textAlign: 'center', fontSize: 100, fontWeight: 'bold', fontFamily: 'serif' }}>
+            TacBac
+          </Text>
+          <View style={{ width: '100%' }}>
+            <TouchableOpacity style={{ width: '100%' }}>
+              {!isConnected ? (
+                <TouchableOpacity onPress={() => { scanDevices(); }} style={{ marginHorizontal: 70, marginVertical: 20, padding: 15, borderRadius: 10, backgroundColor: '#1d64d0', alignItems: 'center' }}>
+                  <Text style={{ textAlign: 'center', fontSize: 20, color: 'white' }}>
+                    Connect Bluetooth
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <Button
+                  title="Disconnect"
+                  onPress={() => {
+                    disconnectDevice();
+                  }}
+                  disabled={false}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={{ margin: 10, alignItems: 'stretch', justifyContent: 'center' }}>
+            <Slider
+              minimumValue={0}
+              maximumValue={100}
+              step={10}
+              value={vibrationValue}
+              onValueChange={value => setVibrationValue(value)}
+            />
+          </View>
+          <View style={{}}>
+            <Text style={{ textAlign: 'center', fontSize: 20 }}>
+              Vibration Level: <Text style={{ fontWeight: 'bold' }}>{vibrationValue}</Text>
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
 
-  );
+    );
+  }
 }
 
 var styles = StyleSheet.create({
