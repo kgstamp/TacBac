@@ -5,6 +5,7 @@ from digitalio import DigitalInOut, Direction
 from time import sleep
 import adafruit_ds3502
 from adafruit_circuitplayground import cp
+from analogio import AnalogIn
 
 num_pixels = 10
 pixels = neopixel.NeoPixel(board.NEOPIXEL, num_pixels, auto_write=False)
@@ -14,6 +15,7 @@ pixels = neopixel.NeoPixel(board.NEOPIXEL, num_pixels, auto_write=False)
 i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 # i2c = board.I2C()  # uses board.SCL and board.SDA
 ds3502 = adafruit_ds3502.DS3502(i2c)
+wiper_output = AnalogIn(board.A1)
 
 def percentage_to_wipervalue(pct):
     assert(0 <= pct and pct <= 1.0)
